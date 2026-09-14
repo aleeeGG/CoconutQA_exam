@@ -4,15 +4,16 @@ from config.base_urls import MOVIES_BASE_URL
 MOVIES = '/movies'
 
 
-class MovieApi(CustomRequester):
+class MoviesApi(CustomRequester):
     def __init__(self, session):
         super().__init__(session=session, base_url=MOVIES_BASE_URL)
 
-    def get_movies(self, params = None, **kwargs):
+    def get_movies(self, params = None, expected_status = 200, **kwargs):
         return self.send_request(
             method="GET",
             endpoint=MOVIES,
             params=params,
+            expected_status=expected_status,
             **kwargs
         )
 

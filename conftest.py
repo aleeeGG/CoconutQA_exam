@@ -72,12 +72,19 @@ def genre_id(api_manager, test_genre):
 
 @pytest.fixture
 def created_movie(api_manager, test_movie):
+    data = api_manager.movie_api.create_movie(test_movie).json()
+    yield data
+    movie_id = data["id"]
+    api_manager.movie_api.delete_movie(movie_id)
+
+@pytest.fixture
+def movie_for_delete(api_manager, test_movie):
     return api_manager.movie_api.create_movie(test_movie).json()
 
 
 @pytest.fixture
-def deleted_movie(api_manager, test_movie, created_movie):
-    movie_id = created_movie["id"]
+def deleted_movie(api_manager, test_movie, movie_for_delete):
+    movie_id = movie_for_delete["id"]
     response = api_manager.movie_api.get_movie(movie_id)
     api_manager.movie_api.delete_movie(movie_id)
     return response.json()
