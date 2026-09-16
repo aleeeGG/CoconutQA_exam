@@ -1,10 +1,11 @@
 def assert_movie_fields(data):
-    assert "id" in data
-    assert "name" in data
-    assert "description" in data
-    assert "price" in data
-    assert "imageUrl" in data
-    assert "location" in data
-    assert "published" in data
-    assert "rating" in data
-    assert "genreId" in data
+    assert data.get("id") is not None
+    assert data.get("name") is not None
+    assert data.get("description") is not None
+    assert data.get("price") is not None
+    assert data.get("imageUrl") is not None
+    assert data.get("location") is not None
+    assert data.get("published") is not None
+    assert data.get("rating") is not None
+    assert data.get("genreId") is not None
+

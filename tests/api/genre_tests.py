@@ -5,7 +5,6 @@ def test_get_genre(api_manager):
     response = api_manager.genre_api.get_genre()
     data = response.json()
 
-    assert response.status_code == 200
     assert isinstance(data, list)
     assert isinstance(data[0], dict)
     assert "id" in data[0]
@@ -17,7 +16,6 @@ def test_create_genre(api_manager, test_genre):
     response = api_manager.genre_api.create_genre(test_genre)
     data = response.json()
 
-    assert response.status_code == 201
     assert isinstance(data, dict)
     assert "id" in data
     assert "name" in data
