@@ -20,7 +20,9 @@ def test_user():
 
 @pytest.fixture(scope="session")
 def api_manager(session):
-    return ApiManager(session)
+    api_manager = ApiManager(session)
+    api_manager.auth_api.authenticate(SUPER_ADMIN_CREDS)
+    return api_manager
 
 
 @pytest.fixture
@@ -65,7 +67,6 @@ def test_movie_patch():
 
 @pytest.fixture
 def genre_id(api_manager, test_genre):
-    api_manager.auth_api.authenticate(SUPER_ADMIN_CREDS)
     response = api_manager.genre_api.create_genre(test_genre)
     return response.json()["id"]
 
