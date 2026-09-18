@@ -10,6 +10,7 @@ def test_get_user_info_auth_admin(api_manager, test_user, registered_user):
     assert data["id"] == user_id
     assert data["email"] == test_user["email"]
 
+
 def test_get_user_info_auth_user(api_manager, test_user, registered_user):
     user_id = registered_user["id"]
     api_manager.auth_api.authenticate(test_user)
@@ -19,6 +20,7 @@ def test_get_user_info_auth_user(api_manager, test_user, registered_user):
 def test_get_user_info_not_auth(unauthenticated_api_manager, registered_user):
     user_id = registered_user["id"]
     unauthenticated_api_manager.user_api.get_user_info(user_id, expected_status=401)
+
 
 def test_delete_three_users(api_manager, test_user):
     user1 = register_data.get_register_payload()
