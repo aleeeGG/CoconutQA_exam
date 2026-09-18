@@ -7,8 +7,8 @@ def test_get_movies_without_params(api_manager, created_movie):
     response = api_manager.movies_api.get_movies()
     data = response.json()
 
-    assertions.assert_non_empty_field(data.get("movies")[0])
     assert data.get("movies") is not None
+    assertions.assert_non_empty_field(data.get("movies")[0])
     assert isinstance(data.get("movies"), list)
 
 
@@ -17,10 +17,10 @@ def test_get_movies_with_params(api_manager, test_movie_param, created_movie):
     response = api_manager.movies_api.get_movies(test_movie_param)
     data = response.json()
 
-    assertions.assert_non_empty_field(data.get("movies")[0])
     assert data.get("movies") is not None
     assert data.get("pageSize") is not None
     assert data.get("page") is not None
+    assertions.assert_non_empty_field(data.get("movies")[0])
     assert isinstance(data.get("movies"), list)
 
     assert data["pageSize"] <= test_movie_param["pageSize"]
