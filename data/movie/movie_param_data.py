@@ -1,7 +1,13 @@
+from data.genre.genre_data import get_genre_ids
 from utils.data_generator import DataGenerator
 
-def get_movie_param():
-    return {
-        "pageSize": DataGenerator.generate_random_page_size(),
-        "page": DataGenerator.generate_random_page(),
-    }
+test_genre_id, test_second_genre_id = get_genre_ids()
+
+minPrice = DataGenerator.generate_random_price()
+maxPrice = minPrice * 2
+
+MOVIE_FILTERS = [
+    {"minPrice": minPrice, "maxPrice": maxPrice},
+    {"locations": DataGenerator.generate_random_city()},
+    {"genreId": test_genre_id}
+]

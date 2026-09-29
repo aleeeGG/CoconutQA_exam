@@ -24,3 +24,11 @@ class GenreApi(CustomRequester):
             expected_status=expected_status,
             **kwargs
         )
+
+    def delete_genre(self, genre_id, expected_status = 200, **kwargs):
+        return self.send_request(
+            method="DELETE",
+            endpoint=f"{GENRE}/{genre_id}",
+            expected_status=expected_status,
+            **kwargs
+        )
