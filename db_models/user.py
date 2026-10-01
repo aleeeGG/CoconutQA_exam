@@ -2,12 +2,14 @@ from sqlalchemy import Column, String, Boolean, DateTime
 from sqlalchemy.orm import declarative_base
 from typing import Dict, Any
 
+from sqlalchemy.sql.sqltypes import Integer
+
 Base = declarative_base()
 
 class UserDBModel(Base):
     __tablename__ = 'users'
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
     email = Column(String)
     full_name = Column(String)
     password = Column(String)

@@ -7,9 +7,9 @@ Base = declarative_base()
 class MovieDBModel(Base):
     __tablename__ = 'movies'
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
-    price = Column(Float)
+    price = Column(Integer)
     description = Column(String)
     image_url = Column(String)
     location = Column(String)
@@ -25,7 +25,7 @@ class MovieDBModel(Base):
             'price': self.price,
             'description': self.description,
             'image_url': self.image_url,
-            'location': self.location,
+            'locations': self.location,
             'published': self.published,
             'rating': self.rating,
             'genre_id': self.genre_id,

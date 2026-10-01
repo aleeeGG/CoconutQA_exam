@@ -23,7 +23,6 @@ class TestMovie:
 
     @allure.title("Тест get запроса списка фильмов с параметрами")
     @pytest.mark.positive
-    @pytest.mark.flaky(reruns=3)
     @pytest.mark.parametrize("movie_filter", MOVIE_FILTERS)
     def test_get_movies_with_params(self, api_manager, movie_filter, create_films_for_filters):
         response = api_manager.movies_api.get_movies(movie_filter)
@@ -114,17 +113,39 @@ class TestMovie:
         assert movie.rating == created_test_movie.rating
 
 
-    @allure.title("Тест удаления фильма с разными правами пользователя")
+    @allure.title("Тест удаления фильма")
     @pytest.mark.positive
+    @pytest.mark.parametrize("created_test_movie", [False], indirect=True)
+    def test_delete_movie(self, super_admin, created_test_movie, db_helper):
+        with allure.step("Проверить наличие фильма в БД"):
+            assert db_helper.get_movie_by_id(created_test_movie.id)
+
+        with allure.step("Удалить фильм от имени super_admin"):
+            response = super_admin.api.movies_api.delete_movie(
+                created_test_movie.id,
+                expected_status=200
+            )
+
+        movie = Movie(**response.json())
+
+        with allure.step("Проверить удаление фильма из БД"):
+            assert db_helper.get_movie_by_id(created_test_movie.id) is None
+
+        assert movie.id == created_test_movie.id
+        assert movie.name == created_test_movie.name
+        assert movie.description == created_test_movie.description
+        assert movie.price == created_test_movie.price
+
+
+    @allure.title("Попытка удаления фильма без прав")
     @pytest.mark.negative
     @pytest.mark.parametrize("created_test_movie", [False], indirect=True)
-    @pytest.mark.parametrize("role", ["super_admin", "admin", "common_user"])
-    def test_delete_movie(self, request, role, created_test_movie, db_helper):
+    @pytest.mark.parametrize("role", ["admin", "common_user"])
+    def test_delete_movie_without_permission(self, request, role, created_test_movie, db_helper):
         with allure.step("Проверить наличие фильма в БД"):
             assert db_helper.get_movie_by_id(created_test_movie.id)
 
         users = {
-            "super_admin": ("super_admin", 200),
             "admin": ("admin", 403),
             "common_user": ("common_user", 403)
         }
@@ -133,38 +154,26 @@ class TestMovie:
         user = request.getfixturevalue(fixture_name)
 
         with allure.step(f"Удалить фильм от имени {role}"):
-            response = user.api.movies_api.delete_movie(
+            user.api.movies_api.delete_movie(
                 created_test_movie.id,
                 expected_status=expected_status
             )
 
-        if role == "super_admin":
-            movie = Movie(**response.json())
+            movie = db_helper.get_movie_by_id(created_test_movie.id)
 
-            with allure.step("Проверить удаление фильма из БД"):
-                assert db_helper.get_movie_by_id(created_test_movie.id) is None
-
-            assert movie.id == created_test_movie.id
+        with allure.step("Проверить, что фильм не удалён"):
             assert movie.name == created_test_movie.name
             assert movie.description == created_test_movie.description
             assert movie.price == created_test_movie.price
-
-        else:
-            movie = db_helper.get_movie_by_id(created_test_movie.id)
-
-            with allure.step("Проверить, что фильм не удалён"):
-                assert movie.name == created_test_movie.name
-                assert movie.description == created_test_movie.description
-                assert movie.price == created_test_movie.price
 
 
     @allure.title("Попытка удалить несуществующий фильм")
     @pytest.mark.negative
     @pytest.mark.flaky(reruns=3)
-    def test_delete_non_existing_movie(self, super_admin):
+    def test_delete_non_existing_movie(self, super_admin, db_helper):
         movie_id = 99999999
         with allure.step("Проверка что фильм действительно не существует"):
-            super_admin.api.movies_api.get_movie(movie_id, expected_status=404)
+            assert db_helper.get_movie_by_id(movie_id) is None
         with allure.step("Попытка удаления"):
             response = super_admin.api.movies_api.delete_movie(movie_id, expected_status=404)
         data = response.json()
@@ -174,6 +183,9 @@ class TestMovie:
 
         assert data["message"] == "Фильм не найден"
         assert data["error"] == "Not Found"
+
+        with allure.step("Проверка что фильма нет в БД после удаления"):
+            assert db_helper.get_movie_by_id(movie_id) is None
 
 
     @allure.title("Тест обновления фильма")

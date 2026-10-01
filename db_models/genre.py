@@ -7,7 +7,7 @@ Base = declarative_base()
 class GenreDBModel(Base):
     __tablename__ = 'genres'
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
 
     def to_dict(self) -> Dict[str, Any]:

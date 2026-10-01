@@ -56,7 +56,7 @@ class DBHelper:
         self.db_session.refresh(movie)
         return movie
 
-    def get_movie_by_id(self, movie_id: str):
+    def get_movie_by_id(self, movie_id: int):
         """Получает фильм по ID"""
         return (
             self.db_session.query(MovieDBModel)
