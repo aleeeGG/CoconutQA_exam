@@ -1,5 +1,7 @@
 from faker import Faker
 import datetime
+from uuid import uuid4
+from data.movie import movie_param_data
 
 faker = Faker()
 
@@ -62,8 +64,6 @@ class DataGenerator:
 
     @staticmethod
     def generate_user_data() -> dict:
-        from uuid import uuid4
-
         return {
             'id': f'{uuid4()}',
             'email': DataGenerator.generate_random_email(),
@@ -78,7 +78,6 @@ class DataGenerator:
 
     @staticmethod
     def generate_movie_data() -> dict:
-        from data.movie import movie_param_data
         id = DataGenerator.generate_random_id()
         return {
             'id': id,

@@ -41,7 +41,7 @@ class Movie(BaseModel):
 
 
 class MoviesPage(BaseModel):
-    movies: list[Movie]
+    movies: Optional[list[Movie]] = None
     count: int = Field(ge=1)
     page: int = Field(ge=1)
     pageSize: int = Field(ge=1)

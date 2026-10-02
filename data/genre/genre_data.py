@@ -1,13 +1,12 @@
-import requests
-
-from config.base_urls import MOVIES_BASE_URL
+from faker import Faker
 from db_models.genre import GenreDBModel
 from db_requester.db_client import get_db_session
-from utils.data_generator import DataGenerator
+
+faker = Faker()
 
 def get_genre_payload():
     return {
-              "name": DataGenerator.generate_random_name()
+              "name": faker.name()
             }
 
 def get_genre_ids():
@@ -15,4 +14,3 @@ def get_genre_ids():
     genres = db.query(GenreDBModel).limit(2).all()
 
     return genres[0].id, genres[1].id
-    #моя жалкая попытка избавиться от хардкода
