@@ -21,7 +21,7 @@ class AuthApi(CustomRequester):
         )
 
 
-    def login_user(self, user_data, expected_status=201, **kwargs):
+    def login_user(self, user_data, expected_status=200, **kwargs):
         return self.send_request(
             method="POST",
             endpoint=LOGIN,
@@ -49,8 +49,8 @@ class AuthApi(CustomRequester):
 
     def authenticate(self, user_creds):
         login_data = {
-            "email": user_creds["email"],
-            "password": user_creds["password"]
+            "email": user_creds[0],
+            "password": user_creds[1]
         }
         response = self.login_user(login_data).json()
         if "accessToken" not in response:

@@ -9,6 +9,6 @@ __pycache__/
 *.log
 *.csv
 *.env
-.env
 .idea
-config/admin_credentials.py
+/allure-results/
+.env

@@ -10,6 +10,7 @@ def get_movie_payload(genre_id):
               "published": DataGenerator.generate_random_bool(),
               "genreId": genre_id
             }
+
 def get_movie_wrong_payload():
     return {
             "name": 312312321,
