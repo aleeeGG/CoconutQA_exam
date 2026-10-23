@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session
 from db_requester.db_client import get_db_session
 from db_requester.db_helpers import DBHelper
 
+DEFAULT_UI_TIMEOUT = 30000
+
 @pytest.fixture(scope="session")
 def session():
     return requests.Session()

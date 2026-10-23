@@ -9,3 +9,5 @@ allure-pytest
 allure-python-commons
 pytest-check
 pytest-rerunfailures
+playwright
+pytest-playwright
