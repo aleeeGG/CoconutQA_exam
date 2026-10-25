@@ -2,7 +2,6 @@ from datetime import datetime
 from random import randint
 
 from playwright.sync_api import Page, expect
-import time
 
 
 def test_registration(page: Page):
@@ -41,7 +40,6 @@ def test_webtables(page: Page):
 
 def test_practice_form(page: Page):
     page.goto("https://demoqa.com/automation-practice-form")
-    page.pause()
     page.get_by_role("textbox", name="First Name").fill("Vlad")
     page.get_by_role("textbox", name="Last Name").fill("Tretyakov")
     page.get_by_role("textbox", name="name@example.com").fill("vlad@gmail.cum")
@@ -102,7 +100,3 @@ def test_radio_buttons_activity_and_checked_state(page: Page):
 
     expect(page.get_by_role("radio", name="Yes")).to_be_checked()
     expect(page.get_by_role("radio", name="Impressive")).not_to_be_checked()
-
-
-
-
