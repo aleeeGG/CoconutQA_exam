@@ -12,3 +12,4 @@ __pycache__/
 .idea
 /allure-results/
 .env
+/tests/ui/files/

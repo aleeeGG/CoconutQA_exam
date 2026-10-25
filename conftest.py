@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session
 from db_requester.db_client import get_db_session
 from db_requester.db_helpers import DBHelper
 
+DEFAULT_UI_TIMEOUT = 30000
+
 @pytest.fixture(scope="session")
 def session():
     return requests.Session()
@@ -137,7 +139,8 @@ def common_user(user_session, super_admin, creation_user_data):
     common_user = User(
         creation_user_data['email'],
         creation_user_data['password'],
-        new_session)
+        new_session,
+        creation_user_data['fullName'])
 
     super_admin.api.user_api.create_user(creation_user_data)
     common_user.api.auth_api.authenticate(common_user.creds)

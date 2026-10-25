@@ -11,7 +11,7 @@ DATABASE_NAME = MoviesDbCreds.DATABASE_NAME
 
 engine = create_engine(
     f"postgresql+psycopg2://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE_NAME}",
-    echo=False
+    echo=True
 )
 
 
